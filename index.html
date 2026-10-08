@@ -581,8 +581,9 @@ $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.c
   function scrollToEl(el){
     const top=el.getBoundingClientRect().top+scrollY-(header?header.offsetHeight:0)-8;
     const start=scrollY, dist=Math.max(0,Math.min(top,document.documentElement.scrollHeight-innerHeight))-start;
-    if(reduce||Math.abs(dist)<2){scrollTo(0,start+dist);return}
-    const dur=Math.min(1400,Math.max(650,Math.abs(dist)*0.45));
+    if(Math.abs(dist)<2){scrollTo(0,start+dist);return}
+    // longer trips take longer, but stay between 0.9s and 1.8s; reduced-motion users get a short, gentle glide
+    const dur=reduce?450:Math.min(1800,Math.max(900,500+Math.abs(dist)*0.35));
     let t0=null; cancel();
     const step=now=>{if(t0===null)t0=now;const p=Math.min(1,(now-t0)/dur);
       scrollTo(0,start+dist*ease(p)); raf=p<1?requestAnimationFrame(step):null;};
