@@ -2,7 +2,7 @@
 
 Personal portfolio site for Aditya Khadse, Data Analytics Specialist (MS Data Analytics Engineering, George Mason University).
 
-**Live site:** https://adityakhadse.github.io/
+**Live site:** https://adityaanalytics.me
 
 ## Features
 - Interactive SQL-style query console in the hero (try `help`, `stack`, `projects`, `hire`)
