@@ -569,7 +569,7 @@ $('#clearf').addEventListener('click',()=>applyFilter(active));
 })();
 
 /* ---------- copy + toast ---------- */
-let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)}
+let tt;function toast(m,ms){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),ms||1800)}
 $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.copy;
   navigator.clipboard.writeText(v).then(()=>{b.textContent='copied';toast('Copied '+v);setTimeout(()=>b.textContent='copy',1500)})
   .catch(()=>{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Selected — press Ctrl/Cmd+C');});}));
@@ -599,6 +599,17 @@ $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.c
     try{history.replaceState(null,'','#'+id)}catch(_){}
   });
 })();
+
+/* ---------- analytics opt-out: visit /#toggle-goatcounter ---------- */
+function gcToggle(){
+  if(location.hash!=='#toggle-goatcounter')return;
+  try{const off=localStorage.getItem('skipgc')==='t';
+    if(off)localStorage.removeItem('skipgc');else localStorage.setItem('skipgc','t');
+    toast(off?'Analytics ON: visits from this browser are counted again':'Analytics OFF: visits from this browser won’t be counted',4500);
+  }catch(e){toast('This browser blocks site storage, so the setting can’t be saved',4500)}
+  try{history.replaceState(null,'',location.pathname)}catch(_){}
+}
+gcToggle(); addEventListener('hashchange',gcToggle);
 
 /* ---------- active nav ---------- */
 const links=$$('#navlinks a');
