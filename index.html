@@ -184,9 +184,15 @@ h2{font:800 clamp(1.9rem,3.6vw,2.6rem)/1.05 var(--display);letter-spacing:-.03em
 .gauge svg{width:84px;height:84px;flex:none}
 .gauge h3{font:700 1.1rem/1.25 var(--display);margin:0}
 .gauge p{margin:2px 0 0;font-size:.88rem;color:var(--muted)}
-.certs{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.cert{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);background:var(--surface);border-radius:10px;font-size:.9rem}
-.cert i{font:700 .65rem var(--mono);font-style:normal;padding:3px 6px;border-radius:4px;background:var(--ink);color:var(--bg)}
+.certs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:22px}
+@media (max-width:860px){.certs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cert{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:20px 14px 18px;border:1px solid var(--line);background:var(--surface);border-radius:14px;transition:transform .2s,border-color .2s}
+.cert:hover{transform:translateY(-4px);border-color:var(--accent)}
+.cert img,.cert svg{width:104px;height:104px;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.cert:hover img,.cert:hover svg{transform:rotate(-6deg) scale(1.06)}
+.cert b{font:700 .98rem/1.25 var(--display);margin-top:6px}
+.cert .code{font:600 .72rem var(--mono);color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 14%,transparent);padding:2px 7px;border-radius:4px}
+.cert .issuer{font-size:.8rem;color:var(--muted)}
 
 /* contact */
 .contact{background:var(--console);color:var(--console-fg);border-radius:20px;padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
@@ -242,7 +248,7 @@ footer{padding-block:28px 40px;font:.75rem var(--mono);color:var(--muted);text-a
         <div><b>2+ yrs</b>industry experience</div>
         <div><b>3.93</b>graduate GPA</div>
         <div><b>1M+</b>records in ETL</div>
-        <div><b>3</b>cloud certifications</div>
+        <div><b>4</b>certifications</div>
       </div>
     </div>
 
@@ -423,9 +429,10 @@ footer{padding-block:28px 40px;font:.75rem var(--mono);color:var(--muted);text-a
         </div>
       </div>
       <div class="certs">
-        <div class="cert"><i>AZ</i>Azure Data Fundamentals</div>
-        <div class="cert"><i>AZ</i>Azure AI Fundamentals</div>
-        <div class="cert"><i>AWS</i>AWS Academy Data Engineering</div>
+        <div class="cert"><img src="badge-az900.png" alt="Microsoft Certified: Azure Fundamentals badge" width="104" height="104" loading="lazy"><b>Azure Fundamentals</b><span class="code">AZ-900</span><span class="issuer">Microsoft Certified</span></div>
+        <div class="cert"><img src="badge-dp900.png" alt="Microsoft Certified: Azure Data Fundamentals badge" width="104" height="104" loading="lazy"><b>Azure Data Fundamentals</b><span class="code">DP-900</span><span class="issuer">Microsoft Certified</span></div>
+        <div class="cert"><img src="badge-ai900.png" alt="Microsoft Certified: Azure AI Fundamentals badge" width="104" height="104" loading="lazy"><b>Azure AI Fundamentals</b><span class="code">AI-900</span><span class="issuer">Microsoft Certified</span></div>
+        <div class="cert"><svg viewBox="0 0 104 104" aria-hidden="true"><path d="M52 6 90 20v34c0 22-17 38-38 44C31 92 14 76 14 54V20Z" fill="var(--console)" stroke="var(--accent)" stroke-width="4"/><text x="52" y="52" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="18" fill="#F2A847">AWS</text><text x="52" y="70" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="1" fill="#D6E2F2">ACADEMY</text></svg><b>Data Engineering</b><span class="code">AWS Academy</span><span class="issuer">Amazon Web Services</span></div>
       </div>
     </div>
   </section>
