@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Aditya Khadse — Data Analytics Specialist. SQL, Python, Power BI, Snowflake, Azure.">
+<title>Aditya Khadse Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Layout: a "data notebook" — graph-paper ground, a live query console as the hero, sections as pipeline stages (raw → model → insight) */
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --ink:#13213A; --muted:#5A6A82; --line:#D7DFEA; --grid:rgba(30,70,140,.06);
+  --accent:#E0912B; --accent-ink:#8A520C; --teal:#15807A; --console:#0F1B2E; --console-fg:#D6E2F2; --console-dim:#7E93B2;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1322; --surface:#121D31; --ink:#E6EDF7; --muted:#93A3BC; --line:#22324C; --grid:rgba(140,180,255,.05);
+  --accent:#F2A847; --accent-ink:#F2A847; --teal:#3CC2B6; --console:#070D18; --console-fg:#D6E2F2; --console-dim:#7E93B2; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1322; --surface:#121D31; --ink:#E6EDF7; --muted:#93A3BC; --line:#22324C; --grid:rgba(140,180,255,.05);
+  --accent:#F2A847; --accent-ink:#F2A847; --teal:#3CC2B6; --console:#070D18; --console-fg:#D6E2F2; --console-dim:#7E93B2; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
+.mono{font-family:var(--mono)}
+
+/* nav */
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{font:800 1.15rem var(--display);letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--bg);font:700 .8rem var(--mono)}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.nav ul a{font:500 .78rem var(--mono);text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:6px;transition:.2s}
+.nav ul a:hover,.nav ul a.on{color:var(--ink);background:var(--surface)}
+.nav ul a.on{box-shadow:inset 0 -2px 0 var(--accent)}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(40px,7vw,88px) 48px}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero>*{min-width:0}
+.status{display:inline-flex;align-items:center;gap:8px;font:500 .75rem var(--mono);color:var(--teal);border:1px solid var(--line);background:var(--surface);padding:5px 12px;border-radius:999px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 var(--teal);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--teal) 60%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+h1{font:800 clamp(2.6rem,6.4vw,4.6rem)/0.98 var(--display);letter-spacing:-.035em;margin:18px 0 18px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent-ink);position:relative;white-space:nowrap}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.06em;height:.14em;background:var(--accent);opacity:.35;border-radius:2px;z-index:-1}
+.lede{color:var(--muted);font-size:1.08rem;max-width:56ch;margin:0 0 26px}
+.lede b{color:var(--ink);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{font:600 .9rem var(--body);display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .15s,border-color .15s}
+.btn:hover{transform:translateY(-2px);border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;font:.78rem var(--mono);color:var(--muted)}
+.facts b{display:block;font:700 1.5rem var(--display);color:var(--ink);letter-spacing:-.02em}
+
+/* console */
+.console{background:var(--console);color:var(--console-fg);border-radius:16px;box-shadow:0 30px 60px -30px rgba(10,20,40,.55);overflow:hidden;font:13px/1.55 var(--mono);border:1px solid #1E2C45}
+.console .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.console .bar i{width:11px;height:11px;border-radius:50%;background:#33445f}
+.console .bar i:nth-child(1){background:#E2655E}.console .bar i:nth-child(2){background:#E8B33F}.console .bar i:nth-child(3){background:#4CB872}
+.console .bar span{margin-left:8px;color:var(--console-dim);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px 0}
+.chips button{font:500 11.5px var(--mono);color:var(--console-fg);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:4px 9px;cursor:pointer;transition:.15s}
+.chips button:hover,.chips button.on{background:#F2A847;color:#0F1B2E;border-color:#F2A847}
+.screen{padding:14px;min-height:300px;max-height:340px;overflow:auto}
+.q{color:#9CCBFF}.q .kw{color:#F2A847;font-weight:700}.q .str{color:#7FD8C7}
+.meta{color:var(--console-dim);font-size:11.5px;margin:6px 0 10px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;color:#F2A847;font-weight:500;border-bottom:1px dashed rgba(255,255,255,.18);padding:4px 10px 4px 0;white-space:nowrap}
+.tbl td{padding:5px 10px 5px 0;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top}
+.tbl td.n{color:#7FD8C7;font-variant-numeric:tabular-nums;white-space:nowrap}
+.prompt{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.prompt label{color:#4CB872}
+.prompt input{flex:1;min-width:0;background:transparent;border:0;color:var(--console-fg);font:13px var(--mono);outline:none}
+.caret{display:inline-block;width:7px;height:14px;background:#F2A847;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* sections */
+section{padding-block:clamp(56px,8vw,96px)}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+.stage{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--teal);border:1px solid var(--teal);padding:3px 8px;border-radius:4px}
+h2{font:800 clamp(1.9rem,3.6vw,2.6rem)/1.05 var(--display);letter-spacing:-.03em;margin:0;text-wrap:balance}
+.sec-head p{flex-basis:100%;margin:6px 0 0;color:var(--muted);max-width:62ch}
+
+/* impact chart */
+.impact{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+@media (max-width:860px){.impact{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.panel h3{font:700 1rem var(--display);margin:0 0 4px}
+.panel .sub{font:.75rem var(--mono);color:var(--muted);margin:0 0 18px}
+.bars{display:grid;gap:14px}
+.bar-row{display:grid;grid-template-columns:minmax(0,1fr) 54px;gap:6px 12px;align-items:center;cursor:default}
+.bar-row .lbl{font-size:.88rem}
+.bar-row .val{font:700 1rem var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+.track{grid-column:1/-1;height:10px;border-radius:5px;background:color-mix(in srgb,var(--line) 70%,transparent);overflow:hidden;position:relative}
+.fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--teal),var(--accent));width:var(--w);animation:grow 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{width:0}}
+.bar-row:hover .fill{filter:brightness(1.12)}
+.axis{display:flex;justify-content:space-between;font:.68rem var(--mono);color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.lineage{display:grid;gap:10px}
+.node{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;padding:12px;border-radius:10px;border:1px dashed var(--line);transition:.2s}
+.node:hover{border-style:solid;border-color:var(--accent)}
+.node .dot{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font:700 .7rem var(--mono);color:var(--bg)}
+.node b{display:block;font-size:.92rem}
+.node span{font-size:.82rem;color:var(--muted)}
+.bronze{background:#B0743C}.silver{background:#8A97A8}.gold{background:#D9A520}
+.arrow{font:.75rem var(--mono);color:var(--muted);padding-left:40px}
+
+/* experience */
+.timeline{position:relative;display:grid;gap:18px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 12px)}
+.job{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;transition:opacity .25s,border-color .25s,transform .25s}
+.job::before{content:"";position:absolute;left:-27px;top:24px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.job-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;align-items:baseline}
+.job h3{font:700 1.25rem var(--display);margin:0;letter-spacing:-.01em}
+.job .role{color:var(--teal);font-weight:600;font-size:.95rem}
+.job .when{font:.78rem var(--mono);color:var(--muted)}
+.job ul{margin:12px 0 0;padding-left:18px;display:grid;gap:6px}
+.job li{font-size:.94rem}
+.job li::marker{color:var(--accent)}
+.hl{font-family:var(--mono);font-weight:700;color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 14%,transparent);padding:0 4px;border-radius:4px}
+.toggle{margin-top:10px;font:500 .78rem var(--mono);background:none;border:0;color:var(--teal);cursor:pointer;padding:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{font:500 .7rem var(--mono);padding:3px 8px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+
+/* projects */
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:960px){.projects{grid-template-columns:1fr}}
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px;transition:opacity .25s,border-color .25s,transform .25s;position:relative;overflow:hidden}
+.proj:hover{transform:translateY(-4px);border-color:var(--ink)}
+.proj .kind{font:500 .7rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--teal)}
+.proj h3{font:700 1.2rem/1.2 var(--display);margin:0;letter-spacing:-.01em}
+.proj p{margin:0;font-size:.92rem;color:var(--muted)}
+.proj .tags{margin-top:auto;padding-top:8px}
+.proj svg{width:100%;height:64px;display:block}
+.proj.feature{grid-column:span 3;display:grid;grid-template-columns:1.2fr 1fr;gap:24px}
+@media (max-width:960px){.proj.feature{grid-column:auto;grid-template-columns:1fr}}
+.proj.feature > div{min-width:0;display:flex;flex-direction:column;gap:10px}
+.proj.feature ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.92rem}
+.proj.feature li::marker{color:var(--accent)}
+.forecast{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px}
+.forecast svg{height:150px}
+.forecast .legend{display:flex;gap:14px;font:.7rem var(--mono);color:var(--muted);flex-wrap:wrap}
+.forecast .legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.note{font:.68rem var(--mono);color:var(--muted)}
+
+/* skills */
+.filter-note{font:.8rem var(--mono);color:var(--muted);margin:-14px 0 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-note button{font:500 .75rem var(--mono);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:3px 9px;cursor:pointer}
+.skillgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.skillgrid .panel h3{font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.sk{display:flex;flex-wrap:wrap;gap:7px}
+.sk button{font:500 .84rem var(--body);padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;transition:.15s}
+.sk button:hover{border-color:var(--accent)}
+.sk button.on{background:var(--accent);border-color:var(--accent);color:#1B1206}
+.sk button .c{font:600 .68rem var(--mono);color:var(--muted);margin-left:5px}
+.sk button.on .c{color:#1B1206}
+.dim{opacity:.28;transform:scale(.99)}
+.match{border-color:var(--accent)!important}
+
+/* education */
+.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.gauge{display:flex;gap:18px;align-items:center}
+.gauge svg{width:84px;height:84px;flex:none}
+.gauge h3{font:700 1.1rem/1.25 var(--display);margin:0}
+.gauge p{margin:2px 0 0;font-size:.88rem;color:var(--muted)}
+.certs{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.cert{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);background:var(--surface);border-radius:10px;font-size:.9rem}
+.cert i{font:700 .65rem var(--mono);font-style:normal;padding:3px 6px;border-radius:4px;background:var(--ink);color:var(--bg)}
+
+/* contact */
+.contact{background:var(--console);color:var(--console-fg);border-radius:20px;padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+@media (max-width:820px){.contact{grid-template-columns:1fr}}
+.contact h2{color:#fff}
+.contact p{color:var(--console-dim);max-width:46ch}
+.rows{display:grid;gap:10px}
+.crow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font:13px var(--mono);min-width:0}
+.crow span{overflow-wrap:anywhere;min-width:0}
+.crow small{display:block;color:var(--console-dim);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.crow button,.crow a.go{flex:none;font:600 11px var(--mono);background:#F2A847;color:#0F1B2E;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;text-decoration:none}
+footer{padding-block:28px 40px;font:.75rem var(--mono);color:var(--muted);text-align:center}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);font:500 .82rem var(--mono);padding:9px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><span>AK</span>Aditya Khadse</a>
+    <ul id="navlinks">
+      <li><a href="#impact">impact</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#education">education</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <span class="status"><i></i>Open to Data Analyst &amp; Analytics Engineer roles</span>
+      <h1>Turning raw data into <em>decisions</em>.</h1>
+      <p class="lede">I'm a <b>Data Analytics Specialist</b> with 2+ years building data models, automated ETL pipelines and Power BI dashboards for pharma and life-sciences teams. I hold an <b>MS in Data Analytics Engineering</b> from George Mason University.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my work →</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+      <div class="facts">
+        <div><b>2+ yrs</b>industry experience</div>
+        <div><b>3.93</b>graduate GPA</div>
+        <div><b>1M+</b>records in ETL</div>
+        <div><b>3</b>cloud certifications</div>
+      </div>
+    </div>
+
+    <div class="console" aria-label="Interactive query console">
+      <div class="bar"><i></i><i></i><i></i><span>portfolio.db — snowflake://aditya</span></div>
+      <div class="chips" id="chips">
+        <button data-q="profile" class="on">profile</button>
+        <button data-q="experience">experience</button>
+        <button data-q="impact">impact</button>
+        <button data-q="stack">stack</button>
+        <button data-q="projects">projects</button>
+      </div>
+      <div class="screen" id="screen" aria-live="polite"></div>
+      <form class="prompt" id="prompt">
+        <label for="cmd">sql&gt;</label>
+        <input id="cmd" autocomplete="off" spellcheck="false" placeholder="type: help, stack, projects, hire…">
+      </form>
+    </div>
+  </div>
+
+  <!-- IMPACT -->
+  <section id="impact">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">gold layer</span>
+        <h2>Measured impact</h2>
+        <p>Results from my two years at P360 Solutions, building reporting and data systems for pharmaceutical commercial teams.</p>
+      </div>
+      <div class="impact">
+        <div class="panel">
+          <h3>Outcomes at P360 Solutions</h3>
+          <p class="sub">% change or rate · hover a bar for context</p>
+          <div class="bars" id="bars"></div>
+          <div class="axis"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+        </div>
+        <div class="panel">
+          <h3>How I work: the medallion flow</h3>
+          <p class="sub">raw → validated → business-ready</p>
+          <div class="lineage">
+            <div class="node"><div class="dot bronze">B</div><div><b>Ingest the raw</b><span>System logs, commercial pharma data and EHR records pulled in through SQL Server, Azure Data Factory and Power BI Dataflows.</span></div></div>
+            <div class="arrow">↓ validate · clean · conform</div>
+            <div class="node"><div class="dot silver">S</div><div><b>Model and test it</b><span>Relational data models, data quality metrics and validation scripts that catch integrity issues before production.</span></div></div>
+            <div class="arrow">↓ aggregate · forecast · visualize</div>
+            <div class="node"><div class="dot gold">G</div><div><b>Deliver the insight</b><span>Dashboards, forecasts and training sessions that put the numbers in front of the people making decisions.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">silver layer</span>
+        <h2>Experience</h2>
+      </div>
+      <div class="timeline">
+        <article class="job filterable" data-tags="Power BI,SQL Server,Azure DevOps,Data Modeling,ETL/ELT,Agile,SQL">
+          <div class="job-top">
+            <div><h3>P360 Solutions</h3><div class="role">Software Engineer (Data Analyst)</div></div>
+            <div class="when">May 2022 – May 2024 · Mumbai, India</div>
+          </div>
+          <ul>
+            <li>Built and maintained Power BI dashboards for pharmaceutical commercial data and software metrics, leading to a <span class="hl">20%</span> improvement in system efficiency.</li>
+            <li>Engineered automated reporting in SQL Server that turned raw life-sciences system logs into structured datasets, cutting manual reporting time by <span class="hl">30%</span>.</li>
+            <li>Worked with 3 departments to define healthcare data quality metrics and metadata standards, using Azure DevOps to resolve <span class="hl">95%</span> of data integrity issues before production.</li>
+            <li class="more" hidden>Designed SQL-based data models for enterprise pharma applications, improving data retrieval speed by <span class="hl">25%</span> and supporting cross-functional BI needs.</li>
+            <li class="more" hidden>Ran technical training sessions on new reporting tools and dashboards, reaching a <span class="hl">95%</span> user adoption rate and raising data literacy across teams.</li>
+          </ul>
+          <button class="toggle" type="button" aria-expanded="false">+ 2 more highlights</button>
+          <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL Server</span><span class="tag">Azure DevOps</span><span class="tag">Data Modeling</span><span class="tag">Life Sciences</span></div>
+        </article>
+
+        <article class="job filterable" data-tags="SQL,Python,MySQL">
+          <div class="job-top">
+            <div><h3>Tejgyan Global Foundation <span style="font-weight:500;color:var(--muted);font-size:.9rem">· supported by TCS</span></h3><div class="role">Software Engineering Intern (Data &amp; Mobile)</div></div>
+            <div class="when">Jan 2021 – Sep 2021 · Remote</div>
+          </div>
+          <ul><li>Architected SQLite data synchronization for mobile metadata and managed API integrations for global content delivery.</li></ul>
+          <div class="tags"><span class="tag">SQLite</span><span class="tag">APIs</span><span class="tag">Metadata</span></div>
+        </article>
+
+        <article class="job filterable" data-tags="Git">
+          <div class="job-top">
+            <div><h3>A1 Robotics and Automation</h3><div class="role">Web Development Intern (Infrastructure)</div></div>
+            <div class="when">May 2020 – Jun 2020 · Remote</div>
+          </div>
+          <ul><li>Engineered full-stack infrastructure and managed DNS and Zoho Mail migrations with <span class="hl">100%</span> data integrity.</li></ul>
+          <div class="tags"><span class="tag">Full-stack</span><span class="tag">DNS</span><span class="tag">Migration</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">gold layer</span>
+        <h2>Projects</h2>
+        <p>From time-series forecasting for a Virginia winery to clinical dashboards in Snowflake.</p>
+      </div>
+      <div class="projects">
+        <article class="proj feature filterable" data-tags="Python,SQL,Time-Series,Tableau,R">
+          <div>
+            <span class="kind">Capstone · Jan – May 2026</span>
+            <h3>Pearmund Cellars: Production Strategy &amp; Forecasting</h3>
+            <ul>
+              <li>Ran exploratory data analysis on historical wine production data to surface seasonal trends, supply chain bottlenecks and production variances.</li>
+              <li>Built SARIMA decision-support models to forecast inventory needs, aimed at better production scheduling and lower overstock costs.</li>
+              <li>Translated statistical output into clear business insights and visuals for procurement and resource-allocation decisions.</li>
+            </ul>
+            <div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">SARIMA</span><span class="tag">EDA</span></div>
+          </div>
+          <div class="forecast">
+            <svg id="fc" viewBox="0 0 400 150" preserveAspectRatio="none" role="img" aria-label="Illustration of a seasonal series with a forecast and confidence band"></svg>
+            <div class="legend"><span><i style="background:var(--teal)"></i>history</span><span><i style="background:var(--accent)"></i>SARIMA forecast</span><span><i style="background:color-mix(in srgb,var(--accent) 30%,transparent);height:8px"></i>95% band</span></div>
+            <div class="note">Illustrative shape only, not client data. Hover to trace.</div>
+          </div>
+        </article>
+
+        <article class="proj filterable" data-tags="Power BI,SQL Server,ETL/ELT,Data Modeling,SQL">
+          <span class="kind">Finance · ETL</span>
+          <h3>Financial Risk Analytics</h3>
+          <svg viewBox="0 0 200 64" aria-hidden="true"><g fill="var(--teal)"><rect x="4" y="40" width="18" height="24" rx="2"/><rect x="30" y="30" width="18" height="34" rx="2"/><rect x="56" y="34" width="18" height="30" rx="2"/><rect x="82" y="22" width="18" height="42" rx="2"/><rect x="108" y="26" width="18" height="38" rx="2"/><rect x="134" y="14" width="18" height="50" rx="2"/></g><rect x="160" y="6" width="18" height="58" rx="2" fill="var(--accent)"/></svg>
+          <p>ETL pipelines in Power BI Dataflows processing <strong style="color:var(--ink)">1M+ financial records</strong>, feeding a relational model in SQL Server for year-over-year time-series analysis and reporting.</p>
+          <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL Server</span><span class="tag">ETL</span></div>
+        </article>
+
+        <article class="proj filterable" data-tags="Snowflake,SQL,Data Warehousing">
+          <span class="kind">Healthcare · Warehouse</span>
+          <h3>Healthcare Intelligence</h3>
+          <svg viewBox="0 0 200 64" aria-hidden="true"><polyline fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round" points="0,44 20,40 34,46 46,20 54,56 64,38 90,40 110,36 122,14 130,52 140,34 170,32 200,30"/><circle cx="200" cy="30" r="3" fill="var(--accent)"/></svg>
+          <p>A clinical dashboard in Snowflake built on complex joins and window functions, with validation scripts ensuring <strong style="color:var(--ink)">100% consistency</strong> across electronic health records.</p>
+          <div class="tags"><span class="tag">Snowflake</span><span class="tag">SQL</span><span class="tag">Window Functions</span></div>
+        </article>
+
+        <article class="proj filterable" data-tags="Azure,Databricks,PySpark,Data Warehousing,ETL/ELT">
+          <span class="kind">Toolkit</span>
+          <h3>Cloud data engineering</h3>
+          <svg viewBox="0 0 200 64" aria-hidden="true"><g fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M30 32h40M110 32h40"/></g><g><rect x="2" y="18" width="28" height="28" rx="6" fill="#B0743C"/><rect x="70" y="18" width="40" height="28" rx="6" fill="#8A97A8"/><rect x="150" y="18" width="40" height="28" rx="6" fill="#D9A520"/></g></svg>
+          <p>Hands-on with Azure Data Factory, Synapse, Databricks and PySpark, organised around medallion architecture. Backed by Azure and AWS Academy certifications.</p>
+          <div class="tags"><span class="tag">Azure</span><span class="tag">Databricks</span><span class="tag">PySpark</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">schema</span>
+        <h2>Skills</h2>
+        <p>Click any skill to filter the experience and projects above to where I've used it.</p>
+      </div>
+      <div class="filter-note" id="filternote" hidden><span id="filtertext"></span><button type="button" id="clearf">clear filter</button></div>
+      <div class="skillgrid" id="skillgrid"></div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">source</span>
+        <h2>Education &amp; certifications</h2>
+      </div>
+      <div class="edu">
+        <div class="panel gauge">
+          <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="34" fill="none" stroke="var(--line)" stroke-width="8"/><circle cx="42" cy="42" r="34" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="210.5 213.6" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" fill="var(--ink)">3.93</text></svg>
+          <div><h3>George Mason University</h3><p>MS, Data Analytics Engineering</p><p class="mono" style="font-size:.75rem">Aug 2024 – May 2026 · Fairfax, VA · GPA 3.93 / 4.0</p></div>
+        </div>
+        <div class="panel gauge">
+          <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="34" fill="none" stroke="var(--line)" stroke-width="8"/><circle cx="42" cy="42" r="34" fill="none" stroke="var(--teal)" stroke-width="8" stroke-linecap="round" stroke-dasharray="189.8 213.6" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="15" fill="var(--ink)">8.86</text></svg>
+          <div><h3>Yeshwantrao Chavan College of Engineering</h3><p>BS, Computer Technology</p><p class="mono" style="font-size:.75rem">Jun 2018 – Jun 2022 · Maharashtra, India · CGPA 8.86 / 10</p></div>
+        </div>
+      </div>
+      <div class="certs">
+        <div class="cert"><i>AZ</i>Azure Data Fundamentals</div>
+        <div class="cert"><i>AZ</i>Azure AI Fundamentals</div>
+        <div class="cert"><i>AWS</i>AWS Academy Data Engineering</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <span class="stage" style="color:#7FD8C7;border-color:#7FD8C7">output</span>
+          <h2 style="margin-top:14px">Let's find the signal in your data.</h2>
+          <p>I'm based in Fairfax, VA and looking for data analyst, BI and analytics engineering roles. The fastest way to reach me is email.</p>
+        </div>
+        <div class="rows">
+          <div class="crow"><span><small>email</small>adikhadase044@gmail.com</span><button type="button" data-copy="adikhadase044@gmail.com">copy</button></div>
+          <div class="crow"><span><small>phone</small>+1 (571) 251-6393</span><button type="button" data-copy="+1 (571) 251-6393">copy</button></div>
+          <div class="crow"><span><small>linkedin</small>linkedin.com/in/akhadse</span><a class="go" href="https://www.linkedin.com/in/akhadse/" target="_blank" rel="noopener">open ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>© 2026 Aditya Khadse · Fairfax, VA · SELECT 'thanks for visiting';</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- impact bars ---------- */
+const impact=[
+ ["Data integrity issues resolved pre-production",95,"Azure DevOps + quality metrics across 3 departments"],
+ ["User adoption of new dashboards",95,"After hands-on training sessions"],
+ ["Reduction in manual reporting time",30,"Automated SQL Server reporting from raw logs"],
+ ["Faster data retrieval",25,"SQL-based data models for pharma apps"],
+ ["System efficiency improvement",20,"Power BI dashboards on commercial data"]
+];
+$('#bars').innerHTML=impact.map(([l,v,t],i)=>`<div class="bar-row" title="${t}"><span class="lbl">${l}</span><span class="val">${v}%</span><div class="track"><div class="fill" style="--w:${v}%;animation-delay:${i*.12}s"></div></div></div>`).join('');
+
+/* ---------- console ---------- */
+const Q={
+ profile:{sql:`<span class="kw">SELECT</span> name, role, location, status <span class="kw">FROM</span> people <span class="kw">WHERE</span> id = <span class="str">'aditya'</span>;`,
+  cols:["name","role","location","status"],rows:[["Aditya Khadse","Data Analytics Specialist","Fairfax, VA","open_to_work"]]},
+ experience:{sql:`<span class="kw">SELECT</span> company, title, start, end <span class="kw">FROM</span> experience <span class="kw">ORDER BY</span> start <span class="kw">DESC</span>;`,
+  cols:["company","title","start","end"],rows:[["P360 Solutions","SWE (Data Analyst)","2022-05","2024-05"],["Tejgyan / TCS","SWE Intern","2021-01","2021-09"],["A1 Robotics","Web Dev Intern","2020-05","2020-06"]]},
+ impact:{sql:`<span class="kw">SELECT</span> metric, delta <span class="kw">FROM</span> outcomes <span class="kw">ORDER BY</span> delta <span class="kw">DESC</span>;`,
+  cols:["metric","delta"],rows:impact.map(r=>[r[0],r[1]+"%"]),num:[1]},
+ stack:{sql:`<span class="kw">SELECT</span> category, <span class="kw">STRING_AGG</span>(tool, <span class="str">', '</span>) <span class="kw">FROM</span> skills <span class="kw">GROUP BY</span> category;`,
+  cols:["category","tools"],rows:[["languages","SQL, Python, R, PySpark"],["bi","Power BI, Tableau"],["cloud","Azure ADF/Synapse, Snowflake, Databricks"],["databases","SQL Server, MySQL"],["practice","ETL/ELT, Data Modeling, Medallion"]]},
+ projects:{sql:`<span class="kw">SELECT</span> project, stack, scale <span class="kw">FROM</span> projects;`,
+  cols:["project","stack","scale"],rows:[["Pearmund Cellars","Python, SARIMA","forecasting"],["Financial Risk","Power BI, SQL Server","1M+ rows"],["Healthcare Intel.","Snowflake","100% EHR match"]]},
+ help:{sql:`-- available commands`,cols:["command","returns"],rows:[["profile","who I am"],["experience","work history"],["impact","measured results"],["stack","tools by category"],["projects","selected work"],["hire","how to reach me"],["clear","wipe the screen"]]},
+ hire:{sql:`<span class="kw">INSERT INTO</span> interviews <span class="kw">VALUES</span> (<span class="str">'you'</span>, <span class="str">'aditya'</span>);`,
+  cols:["channel","value"],rows:[["email","adikhadase044@gmail.com"],["phone","+1 (571) 251-6393"],["linkedin","/in/akhadse"]]}
+};
+const screen=$('#screen'); let timer=null;
+function render(key,animate){
+  const q=Q[key]; clearInterval(timer);
+  if(!q){screen.innerHTML=`<div class="q">${esc(key)}</div><div class="meta" style="color:#E2655E">ERROR: unknown command. Try <b>help</b>.</div>`;return;}
+  $$('#chips button').forEach(b=>b.classList.toggle('on',b.dataset.q===key));
+  const table=`<div class="meta">${q.rows.length} row${q.rows.length>1?'s':''} · ${(Math.random()*40+8).toFixed(0)} ms</div><div style="overflow-x:auto"><table class="tbl"><thead><tr>${q.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${q.rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${(q.num||[]).includes(i)?'n':''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  if(!animate||reduce){screen.innerHTML=`<div class="q">${q.sql}</div>${table}`;return;}
+  // type the query: walk visible characters while preserving tags
+  const tmp=document.createElement('div');tmp.innerHTML=q.sql;const full=tmp.textContent;let n=0;
+  timer=setInterval(()=>{n+=2;
+    if(n>=full.length){clearInterval(timer);screen.innerHTML=`<div class="q">${q.sql}</div>${table}`;screen.scrollTop=0;return;}
+    screen.innerHTML=`<div class="q">${esc(full.slice(0,n))}<span class="caret"></span></div>`;
+  },14);
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+render('profile',false);
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('button');if(b)render(b.dataset.q,true)});
+$('#prompt').addEventListener('submit',e=>{e.preventDefault();const v=$('#cmd').value.trim().toLowerCase().replace(/;$/,'');$('#cmd').value='';
+  if(!v)return; if(v==='clear'){screen.innerHTML='<div class="meta">screen cleared. type <b>help</b>.</div>';return;}
+  const k=Object.keys(Q).find(k=>v===k||v.includes(k)); render(k||v,true);});
+
+/* ---------- experience toggle ---------- */
+$$('.toggle').forEach(b=>b.addEventListener('click',()=>{const open=b.getAttribute('aria-expanded')==='true';
+  b.closest('.job').querySelectorAll('.more').forEach(li=>li.hidden=open);
+  b.setAttribute('aria-expanded',!open);b.textContent=open?'+ 2 more highlights':'− show less';}));
+
+/* ---------- skills filter ---------- */
+const skills={
+ "Languages":["SQL","Python","R","PySpark"],
+ "Analytics & BI":["Power BI","Tableau","Time-Series","Git","Jira","Azure DevOps","Agile"],
+ "Data Engineering":["ETL/ELT","Data Modeling","Data Warehousing","Medallion Architecture"],
+ "Cloud & Databases":["Azure","Snowflake","SQL Server","MySQL","Databricks"]
+};
+const items=$$('.filterable');
+const count=s=>items.filter(el=>el.dataset.tags.split(',').includes(s)).length;
+$('#skillgrid').innerHTML=Object.entries(skills).map(([cat,list])=>`<div class="panel"><h3>${cat}</h3><div class="sk">${list.map(s=>{const c=count(s);return `<button type="button" data-skill="${s}" aria-pressed="false">${s}${c?`<span class="c">${c}</span>`:''}</button>`}).join('')}</div></div>`).join('');
+let active=null;
+function applyFilter(s){
+  active=active===s?null:s;
+  $$('.sk button').forEach(b=>{const on=b.dataset.skill===active;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  items.forEach(el=>{const hit=active&&el.dataset.tags.split(',').includes(active);el.classList.toggle('dim',!!active&&!hit);el.classList.toggle('match',!!hit)});
+  const n=active?count(active):0;
+  $('#filternote').hidden=!active;
+  if(active){$('#filtertext').textContent=n?`${active}: highlighted in ${n} role${n>1?'s':''} / project${n>1?'s':''} above`:`${active}: part of my toolkit, not tied to a single listed role`;
+    toast(n?`Showing where I used ${active}`:`${active} is in my toolkit`);}
+}
+$('#skillgrid').addEventListener('click',e=>{const b=e.target.closest('button');if(b)applyFilter(b.dataset.skill)});
+$('#clearf').addEventListener('click',()=>applyFilter(active));
+
+/* ---------- forecast illustration ---------- */
+(function(){
+  const svg=$('#fc'),W=400,H=150,N=48,split=34;
+  const y=i=>75-28*Math.sin(i/12*2*Math.PI)-i*0.55+(Math.sin(i*1.7)*5);
+  const pts=[...Array(N)].map((_,i)=>[i*(W/(N-1)),y(i)]);
+  const P=a=>a.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ');
+  const hist=pts.slice(0,split+1),fc=pts.slice(split);
+  const band=fc.map((p,i)=>[p[0],p[1]-4-i*1.6]).concat(fc.map((p,i)=>[p[0],p[1]+4+i*1.6]).reverse());
+  svg.innerHTML=`
+   <g stroke="var(--line)" stroke-width="1">${[30,60,90,120].map(v=>`<line x1="0" x2="${W}" y1="${v}" y2="${v}"/>`).join('')}</g>
+   <polygon points="${P(band)}" fill="var(--accent)" fill-opacity=".18"/>
+   <line x1="${pts[split][0]}" x2="${pts[split][0]}" y1="0" y2="${H}" stroke="var(--muted)" stroke-dasharray="3 4"/>
+   <polyline points="${P(hist)}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round"/>
+   <polyline points="${P(fc)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 4"/>
+   <text x="${pts[split][0]+6}" y="14" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--muted)">forecast →</text>
+   <line id="hx" y1="0" y2="${H}" stroke="var(--ink)" stroke-opacity=".35" visibility="hidden"/>
+   <circle id="hc" r="4.5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2" visibility="hidden"/>`;
+  const hx=svg.querySelector('#hx'),hc=svg.querySelector('#hc');
+  svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*W;
+    const i=Math.max(0,Math.min(N-1,Math.round(x/(W/(N-1)))));const [px,py]=pts[i];
+    hx.setAttribute('x1',px);hx.setAttribute('x2',px);hc.setAttribute('cx',px);hc.setAttribute('cy',py);
+    hc.setAttribute('stroke',i>split?'var(--accent)':'var(--teal)');hx.setAttribute('visibility','visible');hc.setAttribute('visibility','visible');});
+  svg.addEventListener('pointerleave',()=>{hx.setAttribute('visibility','hidden');hc.setAttribute('visibility','hidden')});
+})();
+
+/* ---------- copy + toast ---------- */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)}
+$$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.copy;
+  navigator.clipboard.writeText(v).then(()=>{b.textContent='copied';toast('Copied '+v);setTimeout(()=>b.textContent='copy',1500)})
+  .catch(()=>{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Selected — press Ctrl/Cmd+C');});}));
+
+/* ---------- active nav ---------- */
+const links=$$('#navlinks a');
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+  $$('main section[id]').forEach(s=>io.observe(s));}
+})();
+</script>
+</body>
+</html>
