@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Aditya Khadse — Data Analyst">
+<meta property="og:image" content="https://adityaanalytics.me/aditya.jpg">
+<link rel="icon" href="aditya.jpg">
 <meta name="description" content="Aditya Khadse — Data Analytics Specialist. SQL, Python, Power BI, Snowflake, Azure.">
 <title>Aditya Khadse Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +36,12 @@ a{color:inherit}
 .wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
 .mono{font-family:var(--mono)}
 
+.intro{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.avatar{width:104px;height:104px;border-radius:50%;object-fit:cover;flex:none;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--accent),0 14px 28px -14px rgba(10,20,40,.55);transition:transform .3s}
+.avatar:hover{transform:rotate(-4deg) scale(1.04)}
+.intro-meta{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+.who{font:500 .8rem var(--mono);color:var(--muted)}
+.who b{display:block;font:700 1.05rem var(--display);color:var(--ink);letter-spacing:-.01em}
 /* nav */
 header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
@@ -215,7 +224,13 @@ footer{padding-block:28px 40px;font:.75rem var(--mono);color:var(--muted);text-a
 <main id="top">
   <div class="wrap hero">
     <div>
-      <span class="status"><i></i>Open to Data Analyst &amp; Analytics Engineer roles</span>
+      <div class="intro">
+        <img class="avatar" src="aditya.jpg" alt="Headshot of Aditya Khadse" width="104" height="104">
+        <div class="intro-meta">
+          <span class="who"><b>Aditya Khadse</b>Data Analyst · Fairfax, VA</span>
+          <span class="status"><i></i>Open to Data Analyst &amp; Analytics Engineer roles</span>
+        </div>
+      </div>
       <h1>Turning raw data into <em>decisions</em>.</h1>
       <p class="lede">I'm a <b>Data Analytics Specialist</b> with 2+ years building data models, automated ETL pipelines and Power BI dashboards for pharma and life-sciences teams. I hold an <b>MS in Data Analytics Engineering</b> from George Mason University.</p>
       <div class="cta">
