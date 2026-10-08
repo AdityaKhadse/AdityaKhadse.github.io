@@ -28,7 +28,7 @@
   --accent:#F2A847; --accent-ink:#F2A847; --teal:#3CC2B6; --console:#070D18; --console-fg:#D6E2F2; --console-dim:#7E93B2; color-scheme:dark}
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:28px 28px;}
@@ -570,6 +570,31 @@ let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('sh
 $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.copy;
   navigator.clipboard.writeText(v).then(()=>{b.textContent='copied';toast('Copied '+v);setTimeout(()=>b.textContent='copy',1500)})
   .catch(()=>{const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Selected — press Ctrl/Cmd+C');});}));
+
+/* ---------- eased in-page scrolling ---------- */
+(function(){
+  const header=document.querySelector('header.nav');
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; // easeInOutCubic: slow → fast → slow
+  let raf=null;
+  const cancel=()=>{if(raf){cancelAnimationFrame(raf);raf=null}};
+  ['wheel','touchstart','keydown'].forEach(ev=>addEventListener(ev,cancel,{passive:true}));
+  function scrollToEl(el){
+    const top=el.getBoundingClientRect().top+scrollY-(header?header.offsetHeight:0)-8;
+    const start=scrollY, dist=Math.max(0,Math.min(top,document.documentElement.scrollHeight-innerHeight))-start;
+    if(reduce||Math.abs(dist)<2){scrollTo(0,start+dist);return}
+    const dur=Math.min(1400,Math.max(650,Math.abs(dist)*0.45));
+    let t0=null; cancel();
+    const step=now=>{if(t0===null)t0=now;const p=Math.min(1,(now-t0)/dur);
+      scrollTo(0,start+dist*ease(p)); raf=p<1?requestAnimationFrame(step):null;};
+    raf=requestAnimationFrame(step);
+  }
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[href^="#"]'); if(!a)return;
+    const id=a.getAttribute('href').slice(1); const el=id?document.getElementById(id):null;
+    if(!el)return; e.preventDefault(); scrollToEl(el);
+    try{history.replaceState(null,'','#'+id)}catch(_){}
+  });
+})();
 
 /* ---------- active nav ---------- */
 const links=$$('#navlinks a');
