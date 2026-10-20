@@ -46,6 +46,25 @@ a{color:inherit}
 .intro-meta{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
 .who{font:500 .8rem var(--mono);color:var(--muted)}
 .who b{display:block;font:700 1.05rem var(--display);color:var(--ink);letter-spacing:-.01em}
+/* recommendation */
+.rec{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:clamp(20px,4vw,48px);background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(22px,4vw,40px);position:relative;overflow:hidden}
+@media (max-width:820px){.rec{grid-template-columns:1fr}}
+.rec>*{min-width:0}
+.rec::before{content:"\201C";position:absolute;top:-.18em;left:.12em;font:800 12rem/1 var(--display);color:var(--accent);opacity:.14;pointer-events:none}
+.pull{font:700 clamp(1.4rem,2.6vw,1.9rem)/1.2 var(--display);letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance;position:relative}
+.pull mark{background:none;color:var(--accent-ink);box-shadow:inset 0 -.32em 0 color-mix(in srgb,var(--accent) 28%,transparent)}
+.rec-body{display:grid;gap:12px;color:var(--muted);font-size:.98rem;max-width:68ch}
+.rec-body p{margin:0}
+.rec-body b{color:var(--ink);font-weight:600}
+.recommender{display:flex;flex-direction:column;gap:12px;align-self:start;border-left:1px dashed var(--line);padding-left:clamp(16px,3vw,28px)}
+@media (max-width:820px){.recommender{border-left:0;border-top:1px dashed var(--line);padding:18px 0 0;flex-direction:row;align-items:center;flex-wrap:wrap}}
+.recommender img{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--teal)}
+.recommender .nm{font:700 1.1rem var(--display)}
+.recommender .ttl{font-size:.88rem;color:var(--ink)}
+.recommender .now{display:block;margin:4px 0 0;border:0;padding:0;text-transform:none;letter-spacing:0;font:.78rem var(--mono);color:var(--muted)}
+.recommender .rel{font:500 .72rem var(--mono);color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,transparent);padding:3px 8px;border-radius:5px;align-self:flex-start}
+.recommender a{font:500 .78rem var(--mono);color:var(--muted)}
+.recommender a:hover{color:var(--ink)}
 /* nav */
 header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
@@ -363,6 +382,36 @@ footer{padding-block:28px 40px;font:.75rem var(--mono);color:var(--muted);text-a
           <div class="tags"><span class="tag">Full-stack</span><span class="tag">DNS</span><span class="tag">Migration</span></div>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDATION -->
+  <section id="recommendation">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="stage">peer review</span>
+        <h2>What my manager says</h2>
+      </div>
+      <figure class="rec" style="margin:0">
+        <blockquote style="margin:0">
+          <p class="pull">“He is one of the <mark>most dependable engineers</mark> I’ve worked with.”</p>
+          <div class="rec-body">
+            <p>I had the pleasure of managing Aditya at P360 Solutions, and he is one of the most dependable engineers I’ve worked with. He has a strong command of SQL, query optimization, and database management, but what impressed me most was how he performs under pressure. During one critical production issue, we worked side by side for <b>nearly 16 hours straight</b>. Aditya stayed focused and methodical the entire time, working through the problem until we had it resolved.</p>
+            <p>Beyond his own work, he made the whole team stronger. He <b>mentored junior engineers</b>, gave thoughtful code reviews to his peers, and was always ready to brainstorm when someone was stuck. He also took the initiative to <b>document how our data pipelines work</b>, which made onboarding and troubleshooting far easier for everyone.</p>
+            <p>Aditya combines technical depth with a genuine commitment to the people around him. Any team would be lucky to have him, and I recommend him without hesitation.</p>
+          </div>
+        </blockquote>
+        <figcaption class="recommender">
+          <img src="sonali.jpg" alt="Sonali Parab" width="76" height="76" loading="lazy">
+          <div>
+            <div class="nm">Sonali Parab</div>
+            <div class="ttl">Senior Software Engineer, P360 Solutions</div>
+            <span class="now">Now: Senior Software Engineer at HERE Technologies</span>
+          </div>
+          <span class="rel">Managed Aditya · 2022–2024</span>
+          <a href="https://www.linkedin.com/in/akhadse/details/recommendations/" target="_blank" rel="noopener">View on LinkedIn ↗</a>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
